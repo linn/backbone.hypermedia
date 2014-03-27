@@ -2,7 +2,7 @@
 backbone.hypermedia
 ===================
 
-Backbone plugin providing support for following hypermedia controls from Backbone models.
+Backbone plugin providing support for following hypermedia controls from Backbone models and collections.
 
 ## Contributors
  - [Jim Liddell](https://github.com/liddellj)
