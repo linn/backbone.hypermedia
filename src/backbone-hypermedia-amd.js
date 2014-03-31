@@ -24,6 +24,7 @@
                     var attr = key.split('.')[0];
                     key = key.split('.')[1];
                     context = this.get(attr);
+
                     if (context instanceof Array) {
                         _.forEach(context, function (item) {
                             links = item.links;
@@ -116,21 +117,34 @@
                 var self = this;
 
                 _.each(keys, function (key) {
+                    var context;
+                    var jsonContext;
+
+                    if (key.split('.').length > 1) {
+                        var attr = key.split('.')[0];
+                        key = key.split('.')[1];
+                        context = self.get(attr);
+                        jsonContext = json[attr];
+                    } else {
+                        context = self;
+                        jsonContext = json;
+                    }
+
                     var isArray = key.indexOf('[]', key.length - 2) !== -1;
 
                     if (isArray) {
                         key = key.substr(0, key.length - 2);
                     }
 
-                    if (self[key]) {
+                    if (context[key]) {
                         if (isArray) {
-                            json[key] = new Array();
+                            jsonContext[key] = new Array();
 
-                            for (var i = 0; i < self[key].length; i++) {
-                                json[key].push(self[key][i].toJSON());
+                            for (var i = 0; i < context[key].length; i++) {
+                                jsonContext[key].push(context[key][i].toJSON());
                             }
                         } else {
-                            json[key] = self[key].toJSON();
+                            jsonContext[key] = context[key].toJSON();
                         }
                     }
                 });
