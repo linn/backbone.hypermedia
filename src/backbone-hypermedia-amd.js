@@ -31,6 +31,11 @@
                             self._addPromise(promises, links, self, item, key, keys[i]);
                         });
                         continue;
+                    } else if (context instanceof Backbone.Collection) {
+                        context.each(function (item) {
+                            links = item.get('links');
+                            self._addPromise(promises, links, self, item, key, keys[i]);
+                        });
                     } else {
                         links = context.links;
                     }
