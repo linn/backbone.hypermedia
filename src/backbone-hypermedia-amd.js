@@ -31,6 +31,11 @@
                             self._addPromise(promises, links, self, item, key, keys[i]);
                         });
                         continue;
+                    } else if (context instanceof Backbone.Collection) {
+                        context.each(function (item) {
+                            links = item.get('links');
+                            self._addPromise(promises, links, self, item, key, keys[i]);
+                        });
                     } else {
                         links = context.links;
                     }
@@ -59,8 +64,8 @@
             }
 
             for (var i = 0; i < rels.length; i++) {
-                var related = new model.links[linkIndex]();
-                related.set('url', rels[i].href);
+                var related = new model.links[linkIndex](),
+                    urlFactory = _.isFunction(related.urlFactory) ? related.urlFactory : _.identity;
 
                 if (isArray) {
                     if (!context[key]) {
@@ -72,7 +77,7 @@
                     context[key] = related;
                 }
 
-                promises.push(related.fetch());
+                promises.push(related.fetch({ url: urlFactory(rels[i].href) }));
             }
         },
 
