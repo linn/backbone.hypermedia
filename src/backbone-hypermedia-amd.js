@@ -64,8 +64,8 @@
             }
 
             for (var i = 0; i < rels.length; i++) {
-                var related = new model.links[linkIndex]();
-                urlFactory = _.isFunction(related.urlFactory) ? related.urlFactory : _.identity;
+                var related = new model.links[linkIndex](),
+                    urlFactory = _.isFunction(related.urlFactory) ? related.urlFactory : _.identity;
 
                 if (isArray) {
                     if (!context[key]) {
