@@ -60,7 +60,7 @@
 
             for (var i = 0; i < rels.length; i++) {
                 var related = new model.links[linkIndex]();
-                related.set('url', rels[i].href);
+                urlFactory = _.isFunction(related.urlFactory) ? related.urlFactory : _.identity;
 
                 if (isArray) {
                     if (!context[key]) {
@@ -72,7 +72,7 @@
                     context[key] = related;
                 }
 
-                promises.push(related.fetch());
+                promises.push(related.fetch({ url: urlFactory(rels[i].href) }));
             }
         },
 
