@@ -11,6 +11,8 @@ define(function (require) {
         });
 
         describe('when fetch is called', function () {
+            followFired = false;
+
             beforeEach(function () {
                 spyOn(Backbone, 'sync').andCallFake(function () {
                     var d = $.Deferred();
@@ -18,11 +20,19 @@ define(function (require) {
                     return d.promise();
                 });
 
+                sut.on('follow', function () {
+                    followFired = true;
+                });
+
                 sut.fetch();
             });
 
             it('should fetch the model', function () {
                 expect(Backbone.sync.argsForCall[0][1]).toBe(sut);
+            });
+
+            it('should not fire a follow event', function () {
+                expect(followFired).toBe(false);
             });
         });
 
@@ -49,7 +59,12 @@ define(function (require) {
                 });
 
                 describe('and fetch is called', function () {
+                    var followFired = false;
+
                     beforeEach(function () {
+                        sut.on('follow', function () {
+                            followFired = true;
+                        });
                         sut.fetch();
                     });
 
@@ -70,6 +85,10 @@ define(function (require) {
                     it('should add the related model to the parent', function () {
                         expect(sut['some-rel']).toBeDefined();
                         expect(sut['some-rel'] instanceof Backbone.Model).toBeTruthy();
+                    });
+
+                    it('should fire a follow event', function () {
+                        expect(followFired).toBe(true);
                     });
                 });
             });

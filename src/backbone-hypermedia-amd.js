@@ -13,12 +13,12 @@
 
             var keys = _.keys(this.links);
             var promises = new Array();
+            var self = this;
 
             for (var i = 0; i < keys.length; i++) {
                 var key = keys[i];
                 var context;
                 var links;
-                var self = this;
 
                 if (key.split('.').length > 1) {
                     var attr = key.split('.')[0];
@@ -46,41 +46,13 @@
                     links = this.get('links');
                 }
 
-                this._addPromise(promises, links, this, context, key, keys[i]);
+                addPromises(promises, links, this.links[keys[i]], context, key);
             }
 
-            return $.when.apply($, promises);
-        },
-
-        _addPromise: function (promises, links, model, context, key, linkIndex) {
-            var isArray = key.indexOf('[]', key.length - 2) !== -1;
-
-            if (isArray) {
-                key = key.substr(0, key.length - 2);
-            }
-
-            var rels = _.filter(links, function (l) { return l.rel == key; });
-
-            if (rels.length > 1 && !isArray) {
-                throw 'Found more than one link with rel \'' + key + '\', but the link was not specified as allowing multiple values. To allow multiple values, suffix the link key with \'[]\'.';
-            }
-
-            for (var i = 0; i < rels.length; i++) {
-                var related = new model.links[linkIndex](),
-                    urlFactory = _.isFunction(related.urlFactory) ? related.urlFactory : _.identity;
-
-                if (isArray) {
-                    if (!context[key]) {
-                        context[key] = new Array();
-                    }
-
-                    context[key].push(related);
-                } else {
-                    context[key] = related;
-                }
-
-                promises.push(related.fetch({ url: urlFactory(rels[i].href) }));
-            }
+            return $.when.apply($, promises)
+                .then(function () {
+                    self.trigger('follow');
+                });
         },
 
         fetch: function (options) {
@@ -88,14 +60,7 @@
 
             return Backbone.Model.prototype.fetch.call(this, options)
                 .then(function () {
-                    if (self.follow) {
-                        return self.follow();
-                    }
-                })
-                .then(function () {
-                    if (self.follow) {
-                        self.trigger('follow');
-                    }
+                    return self.follow();
                 });
         },
 
@@ -183,4 +148,35 @@
             return Backbone.sync(method, model, options);
         }
     });
+
+    var addPromises = function (promises, links, model, context, key) {
+            var isArray = key.indexOf('[]', key.length - 2) !== -1;
+
+            if (isArray) {
+                key = key.substr(0, key.length - 2);
+            }
+
+            var rels = _.filter(links, function (l) { return l.rel == key; });
+
+            if (rels.length > 1 && !isArray) {
+                throw 'Found more than one link with rel \'' + key + '\', but the link was not specified as allowing multiple values. To allow multiple values, suffix the link key with \'[]\'.';
+            }
+
+            for (var i = 0; i < rels.length; i++) {
+                var related = new model(),
+                    urlFactory = _.isFunction(related.urlFactory) ? related.urlFactory : _.identity;
+
+                if (isArray) {
+                    if (!context[key]) {
+                        context[key] = new Array();
+                    }
+
+                    context[key].push(related);
+                } else {
+                    context[key] = related;
+                }
+
+                promises.push(related.fetch({ url: urlFactory(rels[i].href) }));
+            }
+        };
 }));
