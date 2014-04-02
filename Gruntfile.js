@@ -1,7 +1,7 @@
 module.exports = function (grunt) {
     grunt.initConfig({
         watch: {
-            files: ['<config:jasmine.specs>', 'src/**/*js'],
+            files: ['**/*.js'],
             tasks: 'jasmine'
         },
         jasmine: {
@@ -34,6 +34,7 @@ module.exports = function (grunt) {
     });
 
     grunt.loadNpmTasks('grunt-contrib-jasmine');
+    grunt.loadNpmTasks('grunt-contrib-watch');
 
     grunt.registerTask('default', ['jasmine']);
 

@@ -1,16 +1,17 @@
 {
-  "scripts"         : {
-    "test" : "grunt jasmine"
-  }, 
+  "scripts": {
+    "test": "grunt jasmine"
+  },
   "dependencies": {
     "backbone": "latest",
     "underscore": "latest",
     "jquery": "latest"
-  }       ,
-  "devDependencies" : {
-    "grunt" : "~0.4.4",
-    "grunt-cli" : "~0.1.13",
-    "grunt-contrib-jasmine" : "~0.5.3",
-    "grunt-template-jasmine-requirejs": "~0.1.10"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.4",
+    "grunt-cli": "~0.1.13",
+    "grunt-contrib-jasmine": "~0.5.3",
+    "grunt-template-jasmine-requirejs": "~0.1.10",
+    "grunt-contrib-watch": "^0.6.1"
   }
 }
