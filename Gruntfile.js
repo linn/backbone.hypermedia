@@ -2,8 +2,9 @@ module.exports = function (grunt) {
     grunt.initConfig({
         watch: {
             files: ['**/*.js'],
-            tasks: 'jasmine'
+            tasks: ['jasmine', 'jshint']
         },
+
         jasmine: {
             src: 'src/*.js',
             options: {
@@ -30,12 +31,17 @@ module.exports = function (grunt) {
                     }
                 }
             }
+        },
+
+        jshint: {
+            all: ['Gruntfile.js', 'src/**/*.js', 'spec/**/*.js']
         }
     });
 
     grunt.loadNpmTasks('grunt-contrib-jasmine');
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-contrib-jshint');
 
-    grunt.registerTask('default', ['jasmine']);
+    grunt.registerTask('default', ['jasmine', 'jshint']);
 
 };

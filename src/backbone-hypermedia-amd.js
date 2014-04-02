@@ -12,7 +12,7 @@
             }
 
             var keys = _.keys(this.links);
-            var promises = new Array();
+            var promises = [];
             var self = this;
 
             for (var i = 0; i < keys.length; i++) {
@@ -21,21 +21,25 @@
                 var links;
 
                 if (key.split('.').length > 1) {
+                    var item;
                     var attr = key.split('.')[0];
                     key = key.split('.')[1];
                     context = this.get(attr);
 
                     if (context instanceof Array) {
-                        _.forEach(context, function (item) {
+                        for (var a = 0; a < context.length; a++) {
+                            item = context[a];
                             links = item.links;
                             self._addPromise(promises, links, self, item, key, keys[i]);
-                        });
+                        }
+
                         continue;
                     } else if (context instanceof Backbone.Collection) {
-                        context.each(function (item) {
+                        for (var b = 0; b < context.length; b++) {
+                            item = context[b];
                             links = item.get('links');
                             self._addPromise(promises, links, self, item, key, keys[i]);
-                        });
+                        }
                     } else if (context instanceof Backbone.Model) {
                         links = context.get('links');
                     } else {
@@ -110,7 +114,7 @@
 
                     if (context[key]) {
                         if (isArray) {
-                            jsonContext[key] = new Array();
+                            jsonContext[key] = [];
 
                             for (var i = 0; i < context[key].length; i++) {
                                 jsonContext[key].push(context[key][i].toJSON());
@@ -150,33 +154,33 @@
     });
 
     var addPromises = function (promises, links, model, context, key) {
-            var isArray = key.indexOf('[]', key.length - 2) !== -1;
+        var isArray = key.indexOf('[]', key.length - 2) !== -1;
 
-            if (isArray) {
-                key = key.substr(0, key.length - 2);
-            }
+        if (isArray) {
+            key = key.substr(0, key.length - 2);
+        }
 
-            var rels = _.filter(links, function (l) { return l.rel == key; });
+        var rels = _.filter(links, function (l) { return l.rel == key; });
 
-            if (rels.length > 1 && !isArray) {
-                throw 'Found more than one link with rel \'' + key + '\', but the link was not specified as allowing multiple values. To allow multiple values, suffix the link key with \'[]\'.';
-            }
+        if (rels.length > 1 && !isArray) {
+            throw 'Found more than one link with rel \'' + key + '\', but the link was not specified as allowing multiple values. To allow multiple values, suffix the link key with \'[]\'.';
+        }
 
-            for (var i = 0; i < rels.length; i++) {
-                var related = new model(),
+        for (var i = 0; i < rels.length; i++) {
+            var related = new model(),
                     urlFactory = _.isFunction(related.urlFactory) ? related.urlFactory : _.identity;
 
-                if (isArray) {
-                    if (!context[key]) {
-                        context[key] = new Array();
-                    }
-
-                    context[key].push(related);
-                } else {
-                    context[key] = related;
+            if (isArray) {
+                if (!context[key]) {
+                    context[key] = [];
                 }
 
-                promises.push(related.fetch({ url: urlFactory(rels[i].href) }));
+                context[key].push(related);
+            } else {
+                context[key] = related;
             }
-        };
+
+            promises.push(related.fetch({ url: urlFactory(rels[i].href) }));
+        }
+    };
 }));
