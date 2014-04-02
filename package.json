@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "test": "grunt jasmine"
+    "test": "grunt test"
   },
   "dependencies": {
     "backbone": "latest",
