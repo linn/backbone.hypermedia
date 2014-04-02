@@ -36,6 +36,8 @@
                             links = item.get('links');
                             self._addPromise(promises, links, self, item, key, keys[i]);
                         });
+                    } else if (context instanceof Backbone.Model) {
+                        links = context.get('links');
                     } else {
                         links = context.links;
                     }
