@@ -6,5 +6,6 @@ Backbone plugin providing support for following hypermedia controls from Backbon
 
 ## Contributors
  - [Jim Liddell](https://github.com/liddellj)
+ - [Richard Phillips](https://github.com/richardiphillips)
  - [Barry Williams](https://github.com/bazwilliams)
  - [Henry Wilson](https://twitter.com/henryfcwilson)
