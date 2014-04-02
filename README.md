@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/liddellj/backbone.hypermedia.svg?branch=master)](https://travis-ci.org/liddellj/backbone.hypermedia)
+[![Build Status](https://travis-ci.org/linn/backbone.hypermedia.svg?branch=master)](https://travis-ci.org/linn/backbone.hypermedia)
 backbone.hypermedia
 ===================
 
