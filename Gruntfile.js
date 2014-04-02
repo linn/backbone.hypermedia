@@ -42,6 +42,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-jshint');
 
-    grunt.registerTask('default', ['jasmine', 'jshint']);
+    grunt.registerTask('test', ['jshint', 'jasmine']);
+    grunt.registerTask('default', ['jshint', 'jasmine']);
 
 };
