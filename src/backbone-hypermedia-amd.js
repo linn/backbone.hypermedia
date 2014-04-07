@@ -135,9 +135,10 @@
             var self = this;
 
             return Backbone.Collection.prototype.fetch.call(this, options).then(function () {
-                return $.when.apply($, self.map(function (model) {
-                    return model.follow();
-                }));
+                return $.when.apply($, self.chain()
+                    .filter(function (model) { return model instanceof Backbone.HypermediaModel; })
+                    .map(function (model) { return model.follow(); })
+                    .value());
             })
             .then(function () {
                 self.trigger('follow');
