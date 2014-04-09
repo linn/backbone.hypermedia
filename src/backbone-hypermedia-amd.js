@@ -181,7 +181,7 @@
                 context[key] = related;
             }
 
-            promises.push(related.fetch({ url: urlFactory(rels[i].href) }));
+            promises.push(related.fetch({ url: urlFactory.call(related, rels[i].href) }));
         }
     };
 }));
