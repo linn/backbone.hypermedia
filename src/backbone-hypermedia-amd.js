@@ -1,4 +1,9 @@
-﻿(function (factory) {
+﻿/*!
+ * backbone-hypermedia v0.1.0 (https://github.com/linn/backbone.hypermedia
+ * Licensed under MIT (https://github.com/linn/backbone.hypermedia/blob/master/LICENSE)
+ */
+
+(function (factory) {
     if (typeof exports === 'object') {
         module.exports = factory(require('backbone'), require('underscore'), require('jquery'));
     } else if (typeof define === 'function' && define.amd) {
