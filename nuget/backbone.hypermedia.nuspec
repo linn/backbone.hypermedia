@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>backbone.hypermedia</id>
+        <version>0.1.0</version>
+        <title>backbone.hypermedia</title>
+        <authors>Jim Liddell,Henry Wilson,Sandy Cormie,Richard Phillips,Barry Williams</authors>
+        <licenseUrl>https://github.com/linn/backbone.hypermedia/blob/master/LICENSE</licenseUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Backbone plugin providing support for following hypermedia controls from Backbone models and collections.</description>
+        <dependencies>
+            <dependency id="Backbone.js" version="1.1.0" />
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="..\src\backbone-hypermedia-amd.js" target="content\Scripts\backbone-hypermedia-amd.js" />
+    </files>
+</package>
