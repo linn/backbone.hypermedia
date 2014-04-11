@@ -11,7 +11,7 @@ module.exports = function (grunt) {
 				dest: 'nuget/',
 
 				options: {
-					version: "0.1.0"
+					version: "0.1.1"
 				}
 			}
 		},

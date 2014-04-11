@@ -1,5 +1,5 @@
 ﻿/*!
- * backbone-hypermedia v0.1.0 (https://github.com/linn/backbone.hypermedia
+ * backbone-hypermedia v0.1.1 (https://github.com/linn/backbone.hypermedia
  * Licensed under MIT (https://github.com/linn/backbone.hypermedia/blob/master/LICENSE)
  */
 
@@ -35,7 +35,7 @@
                         for (var a = 0; a < context.length; a++) {
                             item = context[a];
                             links = item.links;
-                            self._addPromise(promises, links, self, item, key, keys[i]);
+                            addPromises(promises, links, self, item, key, keys[i]);
                         }
 
                         continue;
@@ -43,7 +43,7 @@
                         for (var b = 0; b < context.length; b++) {
                             item = context[b];
                             links = item.get('links');
-                            self._addPromise(promises, links, self, item, key, keys[i]);
+                            addPromises(promises, links, self, item, key, keys[i]);
                         }
                     } else if (context instanceof Backbone.Model) {
                         links = context.get('links');
