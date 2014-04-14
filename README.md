@@ -53,6 +53,13 @@ You can also add a `links` property to each related resource and have those rela
 
 `toJSON` will include any related models which have been added to your model as properties.
 
+## npm
+The package is available via [npm](https://www.npmjs.org/package/backbone-hypermedia):
+
+```
+npm install backbone-hypermedia
+```
+
 ## NuGet
 The package is available via [NuGet](https://www.nuget.org/packages/backbone.hypermedia/):
 
