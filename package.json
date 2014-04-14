@@ -1,4 +1,34 @@
 {
+  "name": "backbone-hypermedia",
+  "description": "Backbone plugin providing support for following hypermedia controls from Backbone models.",
+  "url": "https://github.com/linn/backbone.hypermedia",
+  "keywords": [
+    "backbone",
+    "hypermedia",
+    "REST"
+  ],
+  "author": {
+    "name": "Jim Liddell",
+    "url": "https://github.com/liddellj"
+  },
+  "contributors": [
+    {
+      "name": "Henry Wilson",
+      "url": "https://github.com/wilhen01"
+    },
+    {
+      "name": "Sandy Cormie",
+      "url": "https://github.com/mr-sandy"
+    },
+    {
+      "name": "Richard Phillips",
+      "url": "https://github.com/richardiphillips"
+    },
+    {
+      "name": "Barry Williams",
+      "url": "https://github.com/bazwilliams"
+    }
+  ],
   "scripts": {
     "test": "grunt test"
   },
@@ -15,5 +45,12 @@
     "grunt-contrib-watch": "^0.6.1",
     "grunt-contrib-jshint": "^0.10.0",
     "grunt-nuget": "~0.1.2"
+  },
+  "main": "src/backbone-hypermedia-amd.js",
+  "version": "0.1.3",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/linn/backbone.hypermedia"
   }
 }
