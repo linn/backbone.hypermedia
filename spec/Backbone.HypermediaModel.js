@@ -210,8 +210,36 @@ define(function (require) {
                         expect(sut.get('scope')['some-rel']).toBeDefined();
                         expect(sut.get('scope')['some-rel'] instanceof Backbone.Model).toBeTruthy();
                     });
+					
+					describe('and toJSON is called', function () {
+                        var json;
+
+                        beforeEach(function () {
+                            json = sut.toJSON();
+                        });
+
+                        it('should include the related model', function () {
+							console.log(json);
+                            expect(json.scope).toBeDefined();
+							expect(json.scope['some-rel']).toBeDefined();
+                        });
+                    });
                 });
             });
+			
+			// test to ensure that toJSON doesn't fall over even when links have not been followed successfully
+			describe('and toJSON is called', function () {
+				var json;
+
+				beforeEach(function () {
+					json = sut.toJSON();
+				});
+
+				it('should ignore the property if it doesnt exist', function () {
+					expect(json).toBeDefined();
+					expect(json.scope).not.toBeDefined();
+				});
+			});
 
             // and the response contains an array with a corresponding link in each item
         });

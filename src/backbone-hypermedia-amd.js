@@ -1,5 +1,5 @@
 ﻿/*!
- * backbone-hypermedia v0.1.2 (https://github.com/linn/backbone.hypermedia
+ * backbone-hypermedia v0.1.3 (https://github.com/linn/backbone.hypermedia
  * Licensed under MIT (https://github.com/linn/backbone.hypermedia/blob/master/LICENSE)
  */
 
@@ -117,7 +117,7 @@
                         key = key.substr(0, key.length - 2);
                     }
 
-                    if (context[key]) {
+                    if (context && context[key]) {
                         if (isArray) {
                             jsonContext[key] = [];
 
