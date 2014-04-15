@@ -1,26 +1,27 @@
 module.exports = function (grunt) {
     grunt.initConfig({
+        pkg: grunt.file.readJSON('package.json'),
+
         watch: {
             files: ['**/*.js'],
             tasks: ['jasmine', 'jshint']
         },
 
-		nugetpack: {
-			dist: {
-				src: 'nuget/backbone.hypermedia.nuspec',
-				dest: 'nuget/',
+        nugetpack: {
+            dist: {
+                src: 'nuget/backbone.hypermedia.nuspec',
+                dest: 'nuget/',
+                options: {
+                    version: '<%= pkg.version %>'
+                }
+            }
+        },
 
-				options: {
-					version: "0.1.3"
-				}
-			}
-		},
-		
-		nugetpush: {
-			dist: {
-				src: 'nuget/*.nupkg'
-			}
-		},
+        nugetpush: {
+            dist: {
+                src: 'nuget/*.nupkg'
+            }
+        },
 		
         jasmine: {
             src: 'src/*.js',
@@ -58,7 +59,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-jasmine');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-jshint');
-	grunt.loadNpmTasks('grunt-nuget');
+    grunt.loadNpmTasks('grunt-nuget');
 
     grunt.registerTask('test', ['jshint', 'jasmine']);
     grunt.registerTask('default', ['jshint', 'jasmine']);

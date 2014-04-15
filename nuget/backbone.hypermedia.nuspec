@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>backbone.hypermedia</id>
-        <version>0.1.4</version>
+        <version>0.0.0</version>
         <title>backbone.hypermedia</title>
         <authors>Jim Liddell,Henry Wilson,Sandy Cormie,Richard Phillips,Barry Williams</authors>
         <projectUrl>https://github.com/linn/backbone.hypermedia</projectUrl>
