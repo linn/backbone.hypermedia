@@ -14,11 +14,7 @@ define(function (require) {
             followFired = false;
 
             beforeEach(function () {
-                spyOn(Backbone, 'sync').andCallFake(function () {
-                    var d = $.Deferred();
-                    d.resolve();
-                    return d.promise();
-                });
+                stubSync();
 
                 sut.on('follow', function () {
                     followFired = true;
@@ -40,13 +36,11 @@ define(function (require) {
             var options;
 
             beforeEach(function () {
-                options = {};
+                options = {
+                    success: function () { }
+                };
 
-                spyOn(Backbone, 'sync').andCallFake(function () {
-                    var d = $.Deferred();
-                    d.resolve();
-                    return d.promise();
-                });
+                stubSync();
 
                 sut.sync('read', sut, options);
             });
@@ -65,13 +59,11 @@ define(function (require) {
                 var options;
 
                 beforeEach(function () {
-                    options = {};
+                    options = {
+                        success: function () { }
+                    };
 
-                    spyOn(Backbone, 'sync').andCallFake(function () {
-                        var d = $.Deferred();
-                        d.resolve();
-                        return d.promise();
-                    });
+                    stubSync();
 
                     sut.sync('read', sut, options);
                 });
@@ -85,13 +77,11 @@ define(function (require) {
                 var options;
 
                 beforeEach(function () {
-                    options = {};
+                    options = {
+                        success: function () { }
+                    };
 
-                    spyOn(Backbone, 'sync').andCallFake(function () {
-                        var d = $.Deferred();
-                        d.resolve();
-                        return d.promise();
-                    });
+                    stubSync();
 
                     sut.sync('create', sut, options);
                 });
@@ -109,19 +99,15 @@ define(function (require) {
                 };
             });
 
-            describe('and the response contains a corresponding link', function () {
+            describe('and the response contains a single corresponding link', function () {
                 beforeEach(function () {
-                    spyOn(Backbone, 'sync').andCallFake(function (method, model, options) {
-                        var d = $.Deferred();
-                        var data = {
-                            links: [
+                    var data = {
+                        links: [
                                 { rel: 'some-rel', href: '/somewhere' }
                             ]
-                        };
-                        options.success(data);
-                        d.resolve(data);
-                        return d.promise();
-                    });
+                    };
+
+                    stubSync(data);
                 });
 
                 describe('and fetch is called', function () {
@@ -170,6 +156,25 @@ define(function (require) {
                     });
                 });
             });
+
+            describe('and the response contains multiple corresponding links where only one was expected', function () {
+                beforeEach(function () {
+                    var data = {
+                        links: [
+                                { rel: 'some-rel', href: '/somewhere' },
+                                { rel: 'some-rel', href: '/somewhere-else' }
+                            ]
+                    };
+
+                    stubSync(data);
+                });
+
+                it('should throw an error when fetch is called', function () {
+                    expect(function () {
+                        sut.fetch();
+                    }).toThrow(new Error('Found more than one link with rel \'some-rel\', but the link was not specified as allowing multiple values. To allow multiple values, suffix the link key with \'[]\'.'));
+                });
+            });
         });
 
         describe('when the model declares a link within a nested scope', function () {
@@ -181,19 +186,15 @@ define(function (require) {
 
             describe('and the response contains a scope with a corresponding link', function () {
                 beforeEach(function () {
-                    spyOn(Backbone, 'sync').andCallFake(function (method, model, options) {
-                        var d = $.Deferred();
-                        var data = {
-                            scope: {
-                                links: [
+                    var data = {
+                        scope: {
+                            links: [
                                     { rel: 'some-rel', href: '/somewhere' }
                                 ]
-                            }
-                        };
-                        options.success(data);
-                        d.resolve(data);
-                        return d.promise();
-                    });
+                        }
+                    };
+
+                    stubSync(data);
                 });
 
                 describe('and fetch is called', function () {
@@ -210,8 +211,8 @@ define(function (require) {
                         expect(sut.get('scope')['some-rel']).toBeDefined();
                         expect(sut.get('scope')['some-rel'] instanceof Backbone.Model).toBeTruthy();
                     });
-					
-					describe('and toJSON is called', function () {
+
+                    describe('and toJSON is called', function () {
                         var json;
 
                         beforeEach(function () {
@@ -219,37 +220,168 @@ define(function (require) {
                         });
 
                         it('should include the related model', function () {
-							console.log(json);
                             expect(json.scope).toBeDefined();
-							expect(json.scope['some-rel']).toBeDefined();
+                            expect(json.scope['some-rel']).toBeDefined();
                         });
                     });
                 });
             });
-			
-			// test to ensure that toJSON doesn't fall over even when links have not been followed successfully
-			describe('and toJSON is called', function () {
-				var json;
 
-				beforeEach(function () {
-					json = sut.toJSON();
-				});
+            describe('and the response contains an array with a corresponding link in each item', function () {
+                beforeEach(function () {
+                    var data = {
+                        scope: [
+                            {
+                                links: [
+                                    { rel: 'some-rel', href: '/somewhere' }
+                                ]
+                            },
+                            {
+                                links: [
+                                    { rel: 'some-rel', href: '/somewhere-else' }
+                                ]
+                            }
+                        ]
+                    };
 
-				it('should ignore the property if it doesnt exist', function () {
-					expect(json).toBeDefined();
-					expect(json.scope).not.toBeDefined();
-				});
-			});
+                    stubSync(data);
+                });
 
-            // and the response contains an array with a corresponding link in each item
+                describe('and fetch is called', function () {
+                    beforeEach(function () {
+                        sut.fetch();
+                    });
+
+                    it('should add the related model to each array item', function () {
+                        expect(sut.get('scope')[0]['some-rel']).toBeDefined();
+                        expect(sut.get('scope')[0]['some-rel'] instanceof Backbone.Model).toBeTruthy();
+                        expect(sut.get('scope')[1]['some-rel']).toBeDefined();
+                        expect(sut.get('scope')[1]['some-rel'] instanceof Backbone.Model).toBeTruthy();
+                    });
+
+                    describe('and toJSON is called', function () {
+                        var json;
+
+                        beforeEach(function () {
+                            json = sut.toJSON();
+                        });
+
+                        it('should include the related model for each array item', function () {
+                            expect(json.scope).toBeDefined();
+                            expect(json.scope[0]['some-rel']).toBeDefined();
+                            expect(json.scope[1]['some-rel']).toBeDefined();
+                        });
+                    });
+                });
+            });
+
+            // test to ensure that toJSON doesn't fall over even when links have not been followed successfully
+            describe('and toJSON is called', function () {
+                var json;
+
+                beforeEach(function () {
+                    json = sut.toJSON();
+                });
+
+                it('should ignore the property if it doesnt exist', function () {
+                    expect(json).toBeDefined();
+                    expect(json.scope).not.toBeDefined();
+                });
+            });
         });
 
-        // when the model defines a link against a nested Backbone model
+        describe('when the model declares a link which may appear more than once', function () {
+            beforeEach(function () {
+                sut.links = {
+                    'some-rel[]': Backbone.Model
+                };
+            });
+
+            describe('and the response contains multiple corresponding links', function () {
+                beforeEach(function () {
+                    var data = {
+                        links: [
+                                { rel: 'some-rel', href: '/somewhere' },
+                                { rel: 'some-rel', href: '/somewhere-else' }
+                            ]
+                    };
+
+                    stubSync(data);
+                });
+
+                describe('and fetch is called', function () {
+                    beforeEach(function () {
+                        sut.fetch();
+                    });
+
+                    it('should add the related models to the parent as an array', function () {
+                        expect(sut['some-rel']).toBeDefined();
+                        expect(sut['some-rel'] instanceof Array).toBeTruthy();
+                        expect(sut['some-rel'].length).toBe(2);
+                    });
+
+                    describe('and toJSON is called', function () {
+                        var json;
+
+                        beforeEach(function () {
+                            json = sut.toJSON();
+                        });
+
+                        it('should include the array property', function () {
+                            expect(json['some-rel']).toBeDefined();
+                            expect(json['some-rel'] instanceof Array).toBeTruthy();
+                            expect(json['some-rel'].length).toBe(2);
+                        });
+                    });
+                });
+            });
+        });
+
+        // TODO: Need to think this functionality over - struggling to construct a meaningful test
+        xdescribe('when the model has a nested model which defines a links attribute', function () {
+            beforeEach(function () {
+                sut.links = {
+                    'nestedModel.some-rel': Backbone.Model
+                };
+                sut.nestedModel = new Backbone.HypermediaModel();
+            });
+
+            describe('and the response contains a single corresponding link', function () {
+                beforeEach(function () {
+                    var data = {
+                        nestedModel: {
+                            links: [
+                                { rel: 'some-rel', href: '/somewhere' }
+                            ]
+                        }
+                    };
+
+                    stubSync(data);
+                });
+
+                describe('and fetch is called', function () {
+                    beforeEach(function () {
+                        sut.fetch();
+                    });
+
+                    it('should add the related models to the nested model', function () {
+                        expect(sut.nestedModel instanceof Backbone.Model).toBeTruthy();
+                        expect(sut.nestedModel['some-rel']).toBeDefined();
+                        expect(sut.nestedModel['some-rel'] instanceof Backbone.Model).toBeTruthy();
+                    });
+                });
+            });
+        });
 
         // when the model defined a link against a nested Backbone collection
-
-        // when the model declares the link as allowing multiple occurences
-
-        // when multiple occurences of a link are encountered where only one was expected
     });
+
+    var stubSync = function (data) {
+        spyOn(Backbone, 'sync').andCallFake(function (method, model, options) {
+            var d = $.Deferred();
+            options.success(data);
+            d.resolve(data);
+            return d.promise();
+        });
+    };
 });

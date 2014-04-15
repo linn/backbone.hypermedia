@@ -169,7 +169,7 @@
         var rels = _.filter(links, function (l) { return l.rel == key; });
 
         if (rels.length > 1 && !isArray) {
-            throw 'Found more than one link with rel \'' + key + '\', but the link was not specified as allowing multiple values. To allow multiple values, suffix the link key with \'[]\'.';
+            throw new Error('Found more than one link with rel \'' + key + '\', but the link was not specified as allowing multiple values. To allow multiple values, suffix the link key with \'[]\'.');
         }
 
         for (var i = 0; i < rels.length; i++) {
