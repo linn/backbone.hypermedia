@@ -1,5 +1,5 @@
 ﻿/*!
- * backbone-hypermedia v0.1.3 (https://github.com/linn/backbone.hypermedia
+ * backbone-hypermedia v0.1.4 (https://github.com/linn/backbone.hypermedia
  * Licensed under MIT (https://github.com/linn/backbone.hypermedia/blob/master/LICENSE)
  */
 
