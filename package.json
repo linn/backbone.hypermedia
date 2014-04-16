@@ -44,10 +44,14 @@
     "grunt-template-jasmine-requirejs": "~0.1.10",
     "grunt-contrib-watch": "^0.6.1",
     "grunt-contrib-jshint": "^0.10.0",
-    "grunt-nuget": "~0.1.2"
+    "grunt-nuget": "~0.1.2",
+    "grunt-shell": "^0.6.4",
+    "grunt-release": "^0.7.0",
+    "grunt-bump": "0.0.13",
+    "grunt-contrib-clean": "^0.5.0"
   },
   "main": "src/backbone-hypermedia-amd.js",
-  "version": "0.1.4",
+  "version": "0.1.6",
   "license": "MIT",
   "repository": {
     "type": "git",
