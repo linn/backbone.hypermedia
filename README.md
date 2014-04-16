@@ -53,19 +53,39 @@ You can also add a `links` property to each related resource and have those rela
 
 `toJSON` will include any related models which have been added to your model as properties.
 
-## npm
+## Installing from npm
 The package is available via [npm](https://www.npmjs.org/package/backbone-hypermedia):
 
 ```
 npm install backbone-hypermedia
 ```
 
-## NuGet
+## Installing from NuGet
 The package is available via [NuGet](https://www.nuget.org/packages/backbone.hypermedia/):
 
 ```
 Install-Package backbone.hypermedia
 ```
+
+## Publishing
+Prior to publishing a new version of the package to npm and NuGet, you must run the following commands to configure your NuGet and npm credentials. You should only need to do this once.
+```
+npm adduser
+grunt nugetkey --key=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
+```
+Once you have entered your credentials, you can publish to npm and NuGet by running one of the following tasks:
+ ```
+grunt publish
+```
+Increments patch version in package.json, publishes to npm and NuGet. This is short-hand for `grunt publish:patch`.
+```
+grunt publish:minor
+```
+As before, but bumps minor version.
+```
+grunt publish:major
+```
+As before, but bumps major version.
 
 ## Contributors
  - [Sandy Cormie](https://github.com/mr-sandy)
