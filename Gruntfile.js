@@ -57,9 +57,13 @@ module.exports = function (grunt) {
 
         clean: ['nuget/*.nupkg'],
 
+	// pushes to npm
         release: {
             options: {
-                bump: false, // use grunt-bump for this as it can reload pkg
+            	// we'll use grunt-bump to increment the version as it
+            	// supports reloading the pkg config var which we need
+            	// as it is referenced when the nuget tasks are run
+                bump: false,
                 add: false,
                 commit: false,
                 tag: false,
@@ -70,6 +74,7 @@ module.exports = function (grunt) {
 
         bump: {
             options: {
+            	// reload pkg config var after bump
                 updateConfigs: ['pkg'],
                 commit: false,
                 createTag: false,
@@ -89,7 +94,7 @@ module.exports = function (grunt) {
     grunt.registerTask('test', ['jshint', 'jasmine']);
     grunt.registerTask('default', ['test']);
     grunt.registerTask('publish', ['publish:patch']);
-    grunt.registerTask('publish:patch', ['clean', 'bump', 'release:patch', 'nugetpack', 'nugetpush']);
-    grunt.registerTask('publish:minor', ['clean', 'bump', 'release:minor', 'nugetpack', 'nugetpush']);
-    grunt.registerTask('publish:major', ['clean', 'bump', 'release:major', 'nugetpack', 'nugetpush']);
+    grunt.registerTask('publish:patch', ['clean', 'bump:patch', 'release', 'nugetpack', 'nugetpush']);
+    grunt.registerTask('publish:minor', ['clean', 'bump:minor', 'release', 'nugetpack', 'nugetpush']);
+    grunt.registerTask('publish:major', ['clean', 'bump:major', 'release', 'nugetpack', 'nugetpush']);
 };
