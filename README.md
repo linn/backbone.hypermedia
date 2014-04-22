@@ -53,22 +53,26 @@ You can also add a `links` property to each related resource and have those rela
 
 `toJSON` will include any related models which have been added to your model as properties.
 
-## Installing from npm
-The package is available via [npm](https://www.npmjs.org/package/backbone-hypermedia):
+## Installation
+### Bower
+```
+bower install backbone-hypermedia
+```
+
+### [npm](https://www.npmjs.org/package/backbone-hypermedia)
 
 ```
 npm install backbone-hypermedia
 ```
 
-## Installing from NuGet
-The package is available via [NuGet](https://www.nuget.org/packages/backbone.hypermedia/):
+### [NuGet](https://www.nuget.org/packages/backbone.hypermedia/)
 
 ```
 Install-Package backbone.hypermedia
 ```
 
 ## Publishing
-Prior to publishing a new version of the package to npm and NuGet, you must run the following commands to configure your NuGet and npm credentials. You should only need to do this once.
+Prior to publishing a new version of the package, you must run the following commands to configure your NuGet and npm credentials. You should only need to do this once.
 ```
 npm adduser
 grunt nugetkey --key=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
@@ -86,6 +90,8 @@ As before, but bumps minor version.
 grunt publish:major
 ```
 As before, but bumps major version.
+
+The publish task will create an appropriate semver tag which Bower will detect as a new version.
 
 ## Contributors
  - [Sandy Cormie](https://github.com/mr-sandy)
