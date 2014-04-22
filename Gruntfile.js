@@ -57,18 +57,16 @@ module.exports = function (grunt) {
 
         clean: ['nuget/*.nupkg'],
 
-	// pushes to npm
+	    // pushes to npm
         release: {
             options: {
             	// we'll use grunt-bump to increment the version as it
             	// supports reloading the pkg config var which we need
             	// as it is referenced when the nuget tasks are run
                 bump: false,
-                add: false,
-                commit: false,
-                tag: false,
-                push: false,
-                pushTags: false
+                github: { 
+                    repo: 'linn/backbone.hypermedia'
+                }
             }
         },
 
