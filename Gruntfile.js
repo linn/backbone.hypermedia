@@ -64,9 +64,10 @@ module.exports = function (grunt) {
             	// supports reloading the pkg config var which we need
             	// as it is referenced when the nuget tasks are run
                 bump: false,
-                github: { 
+                commitMessage: 'Release <%= version %>'
+                /*github: { 
                     repo: 'linn/backbone.hypermedia'
-                }
+                }*/
             }
         },
 
