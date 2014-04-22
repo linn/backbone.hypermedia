@@ -28,11 +28,11 @@
     "**/.*",
     "node_modules",
     "bower_components",
-    "nuget"
+    "nuget",
     "spec",
     "Gruntfile.js",
     "package.json",
-    ".travis.yml"
+    ".travis.yml",
     ".gitignore"
   ]
 }
