@@ -60,7 +60,7 @@
 
             return $.when.apply($, promises)
                 .then(function () {
-                    self.trigger('follow');
+                    self.trigger('follow', self);
                 });
         },
 
@@ -146,7 +146,7 @@
                     .value());
             })
             .then(function () {
-                self.trigger('follow');
+                self.trigger('follow', self);
             });
         },
 
