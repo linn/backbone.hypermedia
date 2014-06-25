@@ -1,4 +1,6 @@
-[![Build Status](https://travis-ci.org/linn/backbone.hypermedia.svg?branch=master)](https://travis-ci.org/linn/backbone.hypermedia)
+[![Build Status](http://img.shields.io/travis/linn/backbone.hypermedia/master.svg?style=flat)](https://travis-ci.org/linn/backbone.hypermedia)
+[![npm Version](http://img.shields.io/npm/v/backbone-hypermedia.svg?style=flat)](https://www.npmjs.org/package/backbone-hypermedia)
+[![Nuget Version](http://img.shields.io/nuget/v/backbone.hypermedia.svg?style=flat)](https://www.nuget.org/packages/backbone.hypermedia/)
 backbone.hypermedia
 ===================
 
@@ -59,13 +61,12 @@ You can also add a `links` property to each related resource and have those rela
 bower install backbone-hypermedia
 ```
 
-### [npm](https://www.npmjs.org/package/backbone-hypermedia)
-
+### [npm](https://www.npmjs.org/package/backbone-hypermedia) [![npm Version](http://img.shields.io/npm/v/backbone-hypermedia.svg?style=flat)](https://www.npmjs.org/package/backbone-hypermedia) [![npm Downloads](http://img.shields.io/npm/dm/backbone-hypermedia.svg?style=flat)](https://www.npmjs.org/package/backbone-hypermedia)
 ```
 npm install backbone-hypermedia
 ```
 
-### [NuGet](https://www.nuget.org/packages/backbone.hypermedia/)
+### [NuGet](https://www.nuget.org/packages/backbone.hypermedia/) [![Nuget Version](http://img.shields.io/nuget/v/backbone.hypermedia.svg?style=flat)](https://www.nuget.org/packages/backbone.hypermedia/) [![Nuget Downloads](http://img.shields.io/nuget/dt/backbone.hypermedia.svg?style=flat)](https://www.nuget.org/packages/backbone.hypermedia/)
 
 ```
 Install-Package backbone.hypermedia
