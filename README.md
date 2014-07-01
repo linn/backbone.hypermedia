@@ -10,7 +10,7 @@ Backbone plugin providing support for following hypermedia controls from Backbon
 
 Assuming a resource with a `links` property, something like this:
 
-```language-javascript
+```javascript
 {
 	"name": {
 		"first" : "Joe",
@@ -24,7 +24,7 @@ Assuming a resource with a `links` property, something like this:
 
 Define a corresponding Backbone model by extending `Backbone.HypermediaModel` (instead of `Backbone.Model`):
 
-```language-javascript
+```javascript
 var User = Backbone.HypermediaModel.extend({
    ...
 });
@@ -32,7 +32,7 @@ var User = Backbone.HypermediaModel.extend({
 
 Then define a `links` property for the model like this:
 
-```language-javascript
+```javascript
 links: {
 	'country': Country,
 	'timezone': TimeZone
@@ -45,7 +45,7 @@ Each key corresponds to the `rel` value of a link which may be present when the 
 
 By using the promise returned from `fetch` you can wait until all related resources are fetched before rendering your view:
 
-```language-javascript
+```javascript
 user.fetch().then(function () {
 	// show user view
 });
