@@ -78,11 +78,11 @@ Prior to publishing a new version of the package, you must run the following com
 npm adduser
 grunt nugetkey --key=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
 ```
-Once you have entered your credentials, you can publish to npm and NuGet by running one of the following tasks:
+Once you have entered your credentials, you will have to get yourself added as a maintainer to both nuget and npm. Then you can publish to npm and NuGet by running one of the following tasks:
  ```
-grunt publish
+grunt publish:patch
 ```
-Increments patch version in package.json, publishes to npm and NuGet. This is short-hand for `grunt publish:patch`.
+Increments patch version in package.json, publishes to npm and NuGet. A short-hand command is `grunt publish`.
 ```
 grunt publish:minor
 ```
