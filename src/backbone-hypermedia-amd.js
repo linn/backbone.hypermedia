@@ -11,7 +11,7 @@
     }
 } (function (Backbone, _, $) {
     Backbone.HypermediaModel = Backbone.Model.extend({
-        follow: function () {
+        follow: function (relsToFollow) {
             if (!this.links) {
                 return;
             }
@@ -25,42 +25,46 @@
                 var context;
                 var links;
 
-                if (key.split('.').length > 1) {
-                    var item;
-                    var attr = key.split('.')[0];
-                    key = key.split('.')[1];
-                    context = this.get(attr);
+                if (!relsToFollow || _.contains(relsToFollow, key)) {
+                    if (key.split('.').length > 1) {
+                        var item;
+                        var attr = key.split('.')[0];
+                        key = key.split('.')[1];
+                        context = this.get(attr);
 
-                    if (context instanceof Array) {
-                        for (var a = 0; a < context.length; a++) {
-                            item = context[a];
-                            links = item.links;
-                            addPromises(promises, links, self.links[keys[i]], item, key);
-                        }
+                        if (context instanceof Array) {
+                            for (var a = 0; a < context.length; a++) {
+                                item = context[a];
+                                links = item.links;
+                                addPromises(promises, links, self.links[keys[i]], item, key);
+                            }
 
-                        continue;
-                    } else if (context instanceof Backbone.Collection) {
-                        for (var b = 0; b < context.length; b++) {
-                            item = context[b];
-                            links = item.get('links');
-                            addPromises(promises, links, self.links[keys[i]], item, key);
+                            continue;
+                        } else if (context instanceof Backbone.Collection) {
+                            for (var b = 0; b < context.length; b++) {
+                                item = context[b];
+                                links = item.get('links');
+                                addPromises(promises, links, self.links[keys[i]], item, key);
+                            }
+                        } else if (context instanceof Backbone.Model) {
+                            links = context.get('links');
+                        } else {
+                            links = context.links;
                         }
-                    } else if (context instanceof Backbone.Model) {
-                        links = context.get('links');
                     } else {
-                        links = context.links;
+                        context = this;
+                        links = this.get('links');
                     }
-                } else {
-                    context = this;
-                    links = this.get('links');
-                }
 
-                addPromises(promises, links, this.links[keys[i]], context, key);
+                    addPromises(promises, links, this.links[keys[i]], context, key);
+                }
             }
 
             return $.when.apply($, promises)
                 .then(function () {
-                    self.trigger('follow', self);
+                    if (promises.length > 0) {
+                        self.trigger('follow', self);
+                    }
                 });
         },
 
@@ -69,7 +73,7 @@
 
             return Backbone.Model.prototype.fetch.call(this, options)
                 .then(function () {
-                    return self.follow();
+                    return options ? self.follow(options.follow) : self.follow();
                 });
         },
 

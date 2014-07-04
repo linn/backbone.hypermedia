@@ -155,6 +155,82 @@ define(function (require) {
                         });
                     });
                 });
+
+                describe('and fetch is called with empty follow array in options', function () {
+                    var followFired = false;
+
+                    beforeEach(function () {
+                        sut.on('follow', function () {
+                            followFired = true;
+                        });
+                        sut.fetch({ follow: [] });
+                    });
+
+                    it('should fetch the model', function () {
+                        expect(Backbone.sync.argsForCall[0][1]).toBe(sut);
+                    });
+
+                    it('should not fire a follow event', function () {
+                        expect(followFired).toBe(false);
+                    });
+                });
+
+                describe('and fetch is called with a populated follow array in options', function () {
+                    var followFired = false;
+
+                    beforeEach(function () {
+                        sut.on('follow', function () {
+                            followFired = true;
+                        });
+                        sut.fetch({ follow: [ 'some-rel' ] });
+                    });
+
+                    it('should fetch the model', function () {
+                        expect(Backbone.sync.argsForCall[0][1]).toBe(sut);
+                    });
+
+                    it('should fire a follow event', function () {
+                        expect(followFired).toBe(true);
+                    });
+
+                    it('should follow the link', function () {
+                        var related = Backbone.sync.argsForCall[1][1];
+
+                        expect(related instanceof Backbone.Model).toBeTruthy();
+                    });
+                });
+            });
+        });
+
+        describe('when the model has two links', function () {
+            beforeEach(function () {
+                sut.links = {
+                    'some-rel': Backbone.Model,
+                    'another-rel': Backbone.Model
+                };
+            });
+
+            describe('and the response contains two links', function () {
+                beforeEach(function () {
+                    var data = {
+                        links: [
+                                { rel: 'some-rel', href: '/somewhere' },
+                                { rel: 'another-rel', href: '/somewhere' }
+                            ]
+                    };
+
+                    stubSync(data);
+                });
+
+                describe('and fetch is called with a populated follow array for only one of the link rels', function () {
+                    beforeEach(function () {
+                        sut.fetch({ follow: [ 'another-rel' ] });
+                    });
+
+                    it('should call sync twice (1 fetch and 1 follow)', function () {
+                        expect(Backbone.sync.callCount).toBe(2);
+                    });
+                });
             });
 
             describe('and the response contains multiple corresponding links where only one was expected', function () {
