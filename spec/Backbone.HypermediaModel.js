@@ -413,6 +413,43 @@ define(function (require) {
             });
         });
 
+        describe('when the model defines options to use for a link', function () {
+            beforeEach(function () {
+                sut.links = {
+                    'some-rel': Backbone.Model,
+                    'another-rel': {
+                        model: Backbone.Model,
+                        options: {
+                            follow: [ 'another-rel' ]
+                        }
+                    }
+                };
+            });
+            describe('and the response contains two links', function () {
+                beforeEach(function () {
+                    var data = {
+                        links: [
+                                { rel: 'some-rel', href: '/somewhere' },
+                                { rel: 'another-rel', href: '/anotherwhere' }
+                            ]
+                    };
+
+                    stubSync(data);
+                });
+                describe('and fetch is called', function () {
+                    beforeEach(function () {
+                        sut.fetch();
+                    });
+                    it('when fetching another-rel, the provided options should be mixed in', function () {
+                        var theOptionsWeAreLookingFor = _.find(Backbone.sync.argsForCall, function (callArguments) {
+                            return callArguments[2].url === '/anotherwhere';
+                        })[2];
+                        expect(theOptionsWeAreLookingFor.follow).toEqual([ 'another-rel' ]);
+                    });
+                });
+            });
+        });
+
         // TODO: Need to think this functionality over - struggling to construct a meaningful test
         xdescribe('when the model has a nested model which defines a links attribute', function () {
             beforeEach(function () {

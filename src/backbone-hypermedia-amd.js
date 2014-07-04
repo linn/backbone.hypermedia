@@ -36,7 +36,7 @@
                             for (var a = 0; a < context.length; a++) {
                                 item = context[a];
                                 links = item.links;
-                                addPromises(promises, links, self.links[keys[i]], item, key);
+                                addPromises(promises, links, model(self.links[keys[i]]), item, key, options(self.links[keys[i]]));
                             }
 
                             continue;
@@ -44,7 +44,7 @@
                             for (var b = 0; b < context.length; b++) {
                                 item = context[b];
                                 links = item.get('links');
-                                addPromises(promises, links, self.links[keys[i]], item, key);
+                                addPromises(promises, links, model(self.links[keys[i]]), item, key, options(self.links[keys[i]]));
                             }
                         } else if (context instanceof Backbone.Model) {
                             links = context.get('links');
@@ -56,7 +56,7 @@
                         links = this.get('links');
                     }
 
-                    addPromises(promises, links, this.links[keys[i]], context, key);
+                    addPromises(promises, links, model(this.links[keys[i]]), context, key, options(this.links[keys[i]]));
                 }
             }
 
@@ -163,7 +163,25 @@
         }
     });
 
-    var addPromises = function (promises, links, model, context, key) {
+    var model = function (thing) {
+        if (_.isFunction(thing)) {
+            return thing;
+        }
+        if (thing) {
+            return thing.model;
+        }
+    };
+
+    var options = function (thing) {
+        if (_.isFunction(thing)) {
+            return {};
+        }
+        if (thing) {
+            return thing.options;
+        }
+    };
+
+    var addPromises = function (promises, links, model, context, key, options) {
         var isArray = key.indexOf('[]', key.length - 2) !== -1;
 
         if (isArray) {
@@ -190,7 +208,9 @@
                 context[key] = related;
             }
 
-            promises.push(related.fetch({ url: urlFactory.call(related, rels[i].href) }));
+            var fetchOptions = _.extend({}, options, { url: urlFactory.call(related, rels[i].href) });
+
+            promises.push(related.fetch(fetchOptions));
         }
     };
 }));
