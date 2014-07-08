@@ -27,8 +27,8 @@ define(function (require) {
                 expect(Backbone.sync.argsForCall[0][1]).toBe(sut);
             });
 
-            it('should not fire a follow event', function () {
-                expect(followFired).toBe(false);
+            it('should fire a follow event', function () {
+                expect(followFired).toBe(true);
             });
         });
 
@@ -170,8 +170,8 @@ define(function (require) {
                         expect(Backbone.sync.argsForCall[0][1]).toBe(sut);
                     });
 
-                    it('should not fire a follow event', function () {
-                        expect(followFired).toBe(false);
+                    it('should fire a follow event', function () {
+                        expect(followFired).toBe(true);
                     });
                 });
 
