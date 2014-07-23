@@ -12,59 +12,56 @@
 } (function (Backbone, _, $) {
     Backbone.HypermediaModel = Backbone.Model.extend({
         follow: function (relsToFollow) {
-            if (!this.links) {
-                return;
-            }
-
-            var keys = _.keys(this.links);
             var promises = [];
             var self = this;
 
-            for (var i = 0; i < keys.length; i++) {
-                var key = keys[i];
-                var context;
-                var links;
+            if (this.links) {
+                var keys = _.keys(this.links);
 
-                if (!relsToFollow || _.contains(relsToFollow, key)) {
-                    if (key.split('.').length > 1) {
-                        var item;
-                        var attr = key.split('.')[0];
-                        key = key.split('.')[1];
-                        context = this.get(attr);
+                for (var i = 0; i < keys.length; i++) {
+                    var key = keys[i];
+                    var context;
+                    var links;
 
-                        if (context instanceof Array) {
-                            for (var a = 0; a < context.length; a++) {
-                                item = context[a];
-                                links = item.links;
-                                addPromises(promises, links, model(self.links[keys[i]]), item, key, options(self.links[keys[i]]));
+                    if (!relsToFollow || _.contains(relsToFollow, key)) {
+                        if (key.split('.').length > 1) {
+                            var item;
+                            var attr = key.split('.')[0];
+                            key = key.split('.')[1];
+                            context = this.get(attr);
+
+                            if (context instanceof Array) {
+                                for (var a = 0; a < context.length; a++) {
+                                    item = context[a];
+                                    links = item.links;
+                                    addPromises(promises, links, model(self.links[keys[i]]), item, key, options(self.links[keys[i]]));
+                                }
+
+                                continue;
+                            } else if (context instanceof Backbone.Collection) {
+                                for (var b = 0; b < context.length; b++) {
+                                    item = context[b];
+                                    links = item.get('links');
+                                    addPromises(promises, links, model(self.links[keys[i]]), item, key, options(self.links[keys[i]]));
+                                }
+                            } else if (context instanceof Backbone.Model) {
+                                links = context.get('links');
+                            } else {
+                                links = context.links;
                             }
-
-                            continue;
-                        } else if (context instanceof Backbone.Collection) {
-                            for (var b = 0; b < context.length; b++) {
-                                item = context[b];
-                                links = item.get('links');
-                                addPromises(promises, links, model(self.links[keys[i]]), item, key, options(self.links[keys[i]]));
-                            }
-                        } else if (context instanceof Backbone.Model) {
-                            links = context.get('links');
                         } else {
-                            links = context.links;
+                            context = this;
+                            links = this.get('links');
                         }
-                    } else {
-                        context = this;
-                        links = this.get('links');
-                    }
 
-                    addPromises(promises, links, model(this.links[keys[i]]), context, key, options(this.links[keys[i]]));
+                        addPromises(promises, links, model(this.links[keys[i]]), context, key, options(this.links[keys[i]]));
+                    }
                 }
             }
 
             return $.when.apply($, promises)
                 .then(function () {
-                    if (promises.length > 0) {
-                        self.trigger('follow', self);
-                    }
+                    self.trigger('follow', self);
                 });
         },
 
