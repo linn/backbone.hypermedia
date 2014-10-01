@@ -1,4 +1,5 @@
 [![Build Status](http://img.shields.io/travis/linn/backbone.hypermedia/master.svg?style=flat)](https://travis-ci.org/linn/backbone.hypermedia)
+[![Bower Version](http://img.shields.io/bower/v/backbone-hypermedia.svg?style=flat)](http://bower.io/search/?q=backbone-hypermedia)
 [![npm Version](http://img.shields.io/npm/v/backbone-hypermedia.svg?style=flat)](https://www.npmjs.org/package/backbone-hypermedia)
 [![Nuget Version](http://img.shields.io/nuget/v/backbone.hypermedia.svg?style=flat)](https://www.nuget.org/packages/backbone.hypermedia/)
 backbone.hypermedia
