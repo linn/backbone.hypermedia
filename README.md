@@ -56,7 +56,7 @@ You can also add a `links` property to each related resource and have those rela
 `toJSON` will include any related models which have been added to your model as properties.
 
 ## Installation
-### [Bower](http://bower.io/search/?q=backbone-hypermedia)
+### [Bower](http://bower.io/search/?q=backbone-hypermedia) [![Bower Version](http://img.shields.io/bower/v/backbone-hypermedia.svg?style=flat)](http://bower.io/search/?q=backbone-hypermedia)
 ```
 bower install backbone-hypermedia
 ```
