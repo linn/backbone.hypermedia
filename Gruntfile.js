@@ -52,7 +52,7 @@ module.exports = function (grunt) {
         },
 
         jshint: {
-            all: ['Gruntfile.js', 'src/**/*.js', 'spec/**/*.js']
+            all: ['Gruntfile.js', 'src/**/*.js', '!src/**/*.min.map', '!src/**/*.min.js', 'spec/**/*.js']
         },
 
         clean: ['nuget/*.nupkg'],
