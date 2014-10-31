@@ -1,7 +1,11 @@
 {
   "name": "backbone-hypermedia",
   "description": "Backbone plugin providing support for following hypermedia controls from Backbone models and collections.",
-  "main": "src/backbone-hypermedia-amd.js",
+  "main": [
+	"src/backbone-hypermedia-amd.js",
+	"src/backbone-hypermedia-amd.min.js",
+	"src/backbone-hypermedia-amd.min.map"
+  ],
   "moduleType": [
     "amd"
   ],

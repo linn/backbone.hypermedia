@@ -16,5 +16,7 @@
     </metadata>
     <files>
         <file src="..\src\backbone-hypermedia-amd.js" target="content\Scripts\backbone-hypermedia-amd.js" />
+		<file src="..\src\backbone-hypermedia-amd.min.js" target="content\Scripts\backbone-hypermedia-amd.min.js" />
+		<file src="..\src\backbone-hypermedia-amd.min.map" target="content\Scripts\backbone-hypermedia-amd.min.map" />
     </files>
 </package>

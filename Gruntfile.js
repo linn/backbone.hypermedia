@@ -79,7 +79,19 @@ module.exports = function (grunt) {
                 createTag: false,
                 push: false
             }
-        }
+        },
+		
+		uglify: {
+			my_target: {
+				options: {
+					sourceMap: true,
+					sourceMapName: 'src/backbone-hypermedia-amd.min.map'
+				},
+				files: {
+					'src/backbone-hypermedia-amd.min.js': ['src/backbone-hypermedia-amd.js']
+				}
+			}
+		}
     });
 
     grunt.loadNpmTasks('grunt-contrib-clean');
@@ -89,8 +101,10 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-bump');
     grunt.loadNpmTasks('grunt-nuget');
     grunt.loadNpmTasks('grunt-release');
+	grunt.loadNpmTasks('grunt-contrib-uglify');
 
     grunt.registerTask('test', ['jshint', 'jasmine']);
+	grunt.registerTask('minify', ['uglify']);
     grunt.registerTask('default', ['test']);
     grunt.registerTask('publish', ['publish:patch']);
     grunt.registerTask('publish:patch', ['clean', 'bump:patch', 'release', 'nugetpack', 'nugetpush']);
