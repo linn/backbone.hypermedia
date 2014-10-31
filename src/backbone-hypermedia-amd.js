@@ -30,6 +30,12 @@
                             key = key.split('.')[1];
                             context = this.get(attr);
 
+							// allows for following links on child objects within a hetereogenous collection
+							// where some elements in the collection may have the child, and others may not
+							if (!context) {
+                                continue;
+                            }
+							
                             if (context instanceof Array) {
                                 for (var a = 0; a < context.length; a++) {
                                     item = context[a];
