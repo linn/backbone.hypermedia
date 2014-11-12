@@ -32,6 +32,28 @@ define(function (require) {
             });
         });
 
+        describe('when follow is called', function () {
+            followFired = false;
+
+            beforeEach(function () {
+                stubSync();
+
+                sut.on('follow', function () {
+                    followFired = true;
+                });
+
+                sut.follow();
+            });
+
+            it('should fire a follow event', function () {
+                expect(followFired).toBe(true);
+            });
+
+            it('should set followed to true', function () {
+                expect(sut.followed).toBe(true);
+            });
+        });
+
         describe('when sync is called', function () {
             var options;
 
@@ -425,6 +447,7 @@ define(function (require) {
                     }
                 };
             });
+
             describe('and the response contains two links', function () {
                 beforeEach(function () {
                     var data = {
@@ -440,6 +463,7 @@ define(function (require) {
                     beforeEach(function () {
                         sut.fetch();
                     });
+
                     it('when fetching another-rel, the provided options should be mixed in', function () {
                         var theOptionsWeAreLookingFor = _.find(Backbone.sync.argsForCall, function (callArguments) {
                             return callArguments[2].url === '/anotherwhere';

@@ -11,6 +11,8 @@
     }
 } (function (Backbone, _, $) {
     Backbone.HypermediaModel = Backbone.Model.extend({
+        followed: false,
+
         follow: function (relsToFollow) {
             var promises = [];
             var self = this;
@@ -28,6 +30,7 @@
                             var item;
                             var attr = key.split('.')[0];
                             key = key.split('.')[1];
+
                             context = this.get(attr);
 
 							// allows for following links on child objects within a hetereogenous collection
@@ -35,11 +38,12 @@
 							if (!context) {
                                 continue;
                             }
-							
+
                             if (context instanceof Array) {
                                 for (var a = 0; a < context.length; a++) {
                                     item = context[a];
                                     links = item.links;
+
                                     addPromises(promises, links, model(self.links[keys[i]]), item, key, options(self.links[keys[i]]));
                                 }
 
@@ -48,8 +52,11 @@
                                 for (var b = 0; b < context.length; b++) {
                                     item = context[b];
                                     links = item.get('links');
+
                                     addPromises(promises, links, model(self.links[keys[i]]), item, key, options(self.links[keys[i]]));
                                 }
+
+                                continue;
                             } else if (context instanceof Backbone.Model) {
                                 links = context.get('links');
                             } else {
@@ -67,6 +74,7 @@
 
             return $.when.apply($, promises)
                 .then(function () {
+                    self.followed = true;
                     self.trigger('follow', self);
                 });
         },
@@ -148,8 +156,16 @@
 
             return Backbone.Collection.prototype.fetch.call(this, options).then(function () {
                 return $.when.apply($, self.chain()
-                    .filter(function (model) { return model instanceof Backbone.HypermediaModel; })
-                    .map(function (model) { return model.follow(); })
+                    .filter(function (model) {
+                        return model instanceof Backbone.HypermediaModel;
+                    })
+                    .map(function (model) {
+                        if (options && options.follow){
+                            return model.follow(options.follow);
+                        }
+
+                        return model.follow();
+                    })
                     .value());
             })
             .then(function () {
@@ -191,7 +207,9 @@
             key = key.substr(0, key.length - 2);
         }
 
-        var rels = _.filter(links, function (l) { return l.rel == key; });
+        var rels = _.filter(links, function (l) {
+            return l.rel == key;
+        });
 
         if (rels.length > 1 && !isArray) {
             throw new Error('Found more than one link with rel \'' + key + '\', but the link was not specified as allowing multiple values. To allow multiple values, suffix the link key with \'[]\'.');
