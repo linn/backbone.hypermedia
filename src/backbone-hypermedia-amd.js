@@ -11,7 +11,9 @@
     }
 } (function (Backbone, _, $) {
     Backbone.HypermediaModel = Backbone.Model.extend({
-        followed: false,
+        initialize: function () {
+            this.followed = false;
+        },
 
         follow: function (relsToFollow) {
             var promises = [];
