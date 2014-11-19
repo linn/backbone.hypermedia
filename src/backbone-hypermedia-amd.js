@@ -74,11 +74,17 @@
                 }
             }
 
-            return $.when.apply($, promises)
+            if (promises.length) {
+                return $.when.apply($, promises)
                 .then(function () {
                     self.followed = true;
                     self.trigger('follow', self);
                 });
+            } else {
+                var d = $.Deferred();
+                d.resolve();
+                return d.promise();
+            }
         },
 
         fetch: function (options) {

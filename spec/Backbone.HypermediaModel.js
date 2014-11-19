@@ -11,7 +11,7 @@ define(function (require) {
         });
 
         describe('when fetch is called', function () {
-            followFired = false;
+            var followFired = false;
 
             beforeEach(function () {
                 stubSync();
@@ -26,14 +26,10 @@ define(function (require) {
             it('should fetch the model', function () {
                 expect(Backbone.sync.argsForCall[0][1]).toBe(sut);
             });
-
-            it('should fire a follow event', function () {
-                expect(followFired).toBe(true);
-            });
         });
 
-        describe('when follow is called', function () {
-            followFired = false;
+        describe('when follow is called with no links', function () {
+            var followFired = false;
 
             beforeEach(function () {
                 stubSync();
@@ -45,12 +41,12 @@ define(function (require) {
                 sut.follow();
             });
 
-            it('should fire a follow event', function () {
-                expect(followFired).toBe(true);
+            it('should not fire a follow event', function () {
+                expect(followFired).toBe(false);
             });
 
-            it('should set followed to true', function () {
-                expect(sut.followed).toBe(true);
+            it('should not set followed to true', function () {
+                expect(sut.followed).toBe(false);
             });
         });
 
@@ -139,6 +135,7 @@ define(function (require) {
                         sut.on('follow', function () {
                             followFired = true;
                         });
+
                         sut.fetch();
                     });
 
@@ -163,6 +160,10 @@ define(function (require) {
 
                     it('should fire a follow event', function () {
                         expect(followFired).toBe(true);
+                    });
+
+                    it('should set followed to true', function () {
+                        expect(sut.followed).toBe(true);
                     });
 
                     describe('and toJSON is called', function () {
@@ -192,8 +193,8 @@ define(function (require) {
                         expect(Backbone.sync.argsForCall[0][1]).toBe(sut);
                     });
 
-                    it('should fire a follow event', function () {
-                        expect(followFired).toBe(true);
+                    it('should not fire a follow event', function () {
+                        expect(followFired).toBe(false);
                     });
                 });
 
