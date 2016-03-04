@@ -150,6 +150,12 @@
                         } else {
                             jsonContext[key] = context[key].toJSON();
                         }
+                    } else if (context && context instanceof Array) {
+                        for (var j = 0; j < context.length; j++) {
+                            if(context[j][key]){
+                                jsonContext[j][key] = context[j][key].toJSON();
+                            }
+                        }
                     }
                 });
             }

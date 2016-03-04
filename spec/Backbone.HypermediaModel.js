@@ -368,7 +368,9 @@ define(function (require) {
                         it('should include the related model for each array item', function () {
                             expect(json.scope).toBeDefined();
                             expect(json.scope[0]['some-rel']).toBeDefined();
+							expect(json.scope[0]['some-rel'] instanceof Backbone.Model).toBeFalsy();
                             expect(json.scope[1]['some-rel']).toBeDefined();
+							expect(json.scope[1]['some-rel'] instanceof Backbone.Model).toBeFalsy();
                         });
                     });
                 });
